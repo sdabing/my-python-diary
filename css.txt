@@ -1,0 +1,3 @@
+
+透明：background:transparent;
+大多元素的背景默认状态就是它，用于恢复已设定背景的类。

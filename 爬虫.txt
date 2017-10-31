@@ -1,0 +1,19 @@
+requests
+HTMLParser
+bs4
+
+POST:FORM DATA
+AJAX:REQUEST PAYLOAD
+
+小技巧：dir()查看方法
+
+urllib2
+	build_opener(urllib2.HTTPHandler(debuglevel=1))有调试信息
+	install_opener()
+	urllib2.HTTPCookieProcess(cookielib.Cookiejar())
+
+专门测试HTTP协议的网站：http://httpbin.org/get
+列表去重并排序：
+	mailto = ['cc', 'bbbb', 'afa', 'sss', 'bbbb', 'cc', 'shafa']
+	addr_to = list(set(mailto))
+	addr_to.sort(key = mailto.index)

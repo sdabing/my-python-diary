@@ -1,0 +1,5 @@
+1。ORM(object relationship mapping 对象映射)
+
+
+
+2.分布式文件系统

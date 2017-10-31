@@ -1,0 +1,33 @@
+1.  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+OperationalError: (1054, "Unknown column 'warnMsg' in 'field list'")
+
+表格里没有你想要查询的项目  SQL语句有问题
+
+2.Python EOL while scanning string literal
+	这个异常造成的原因是字符串，引号没有成对出现，也就是类似下面的情况
+		str('1)  
+		Traceback (most recent call last):  
+		  File "<string>", line 1, in <fragment>  
+		EOL while scanning string literal: <string>, line 1, pos 7  
+3.SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0x92 in position 0:
+		 invalid start byte
+		原因：文件里有汉字，而文件本身保存的格式是日本语，而不是utf-8，把文件保存格式改了就好了
+
+4.TypeError: 'str' object is not callable原因分析
+	原因分析：
+	
+	当一般内部函数被用作变量名后可能出现此错误。比如：
+	
+	range=1
+	
+	for i in range(0,1):
+	
+	………
+	
+	就会报这样的错误
+
+5.mysql 1142, "SELECT command denied to user 'developer'@'localhost' for table 'WtConsumedToken'"
+
+	说明developer用户没有select语句的权限
+	与DB information_schema 里的 USER_PRIVILEGES里的数据有关

@@ -1,0 +1,8 @@
+WIN+R
+	cmd
+		dir C:\Users\surongling\Desktop\confluence /b > C:\Users\surongling\Desktop\3.txt(把文件夹底下的文件名打印到1.txt文件里)
+	regedit
+	services.msc
+WIN+BREAK(环境变量，控制面板)
+
+

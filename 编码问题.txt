@@ -1,0 +1,61 @@
+我得到了unicode码:un = '\u5c71\u4e181874'
+想让他以汉字形式输出，可以:un = u'\u5c71\u4e181874'  还可以un = un.decode('unicode_escape')(反编码)
+
+
+
+app engine寫中文最常遇到的就是編碼錯誤
+其中又以"UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)" 最常見
+摸了一晚總算歸納出一個統一的解決方法
+
+首先要瞭解unicode和utf-8是不一樣的 常會搞在一起就以為是一樣的東西 unicode指的是萬國碼 是一種"字碼表" 而utf-8是這種字碼表儲存的編碼方法 unicode不一定要由utf-8這種方式編成bytecode儲存 也可以編成utf-16,utf-7等其他方式 只是目前大家大多都以utf-8的方式編成bytecode (更詳細說明可以看一下unicode補完計劃中Unicode、UTF-8、UCS等字的意義)
+
+知道unicode和utf-8的差別後 再來參考這篇How to Use UTF-8 with Python
+python中字串型態分成2種 一種是byte string 一種是unicode string
+一般來說設定好#coding=utf-8後 所有帶中文的參數宣告
+ex: mystr="你好"
+都會被宣告成utf-8編碼的 byte string
+但是在函中中所產生的字串 則是unicode string
+
+byte string和unicode string都能表示中文 那有什麼差呢?
+答案就是不能混用 不然會造成錯誤
+例如以下這個case:
+self.response.out.write("你好"+self.request.get("argu"))
+
+"你好"會自動被宣告成byte string 而self.request.get()的結果是unicode string
+所以python會自動嘗試把前面的"你好"這個byte string轉成unicode string
+但預設的解碼器是ascii 所以當然解不出中文byte string
+然後就噴出這個常見的錯誤
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
+
+所以解決方法有3種
+一種是全都轉byte string 
+一種是全都轉unicode string 
+第三種是更改設定預設解碼器為utf-8
+
+app engine上我不知道怎麼更改設定預設解碼器 所以只說前2種
+
+1.全都轉byte string
+self.response.out.write("你好"+self.request.get("argu").encode('utf-8'))
+
+2.全都轉unicode string
+self.response.out.write(u"你好"+self.request.get("argu"))
+P.S.資料庫存入和讀取以及self.request拿到的參數預設就都是unicode string,若是要把byte string轉unicode string可以這樣轉unicode(unicodestring,"utf-8")
+
+這樣就再也不會有"UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)"的問題產生了 遇到噴出這種錯誤幾乎都可以用這2種方法解決
+
+我個人是覺得用第一種全都轉byte string比較好
+因為一但用了unicode string 以後有中文字串前面都要掛個u 看起來不是很直覺 而且容易漏掉
+不如在遇到函式有中文結果(或是資料庫撈出來的結果)直接都encode成utf-8就好
+
+
+
+
+
+Python 3.5 Socket TypeError: a bytes-like object is required, not 'str' 错误提示
+原创 2017年03月29日 16:49:57 5075211
+目前正在学习python基本语法以及计算机网络课，所以正好结合学习python网络编程，看的是《python核心编程》第三版,发现示例2-1代码返回错误…..纠结很久 
+发现这里python3.5和Python2.7在套接字返回值解码上有区别。 
+先介绍一下 python bytes和str两种类型转换的函数encode(),decode()
+
+str通过encode()方法可以编码为指定的bytes
+反过来，如果我们从网络或磁盘上读取了字节流，那么读到的数据就是bytes。要把bytes变为str，就需要用decode()方法：

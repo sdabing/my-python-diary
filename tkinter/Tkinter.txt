@@ -1,0 +1,69 @@
+一个网站： http://blog.csdn.net/wuxiushu/article/details/52514200
+           http://www.cnblogs.com/zhangyuxin/p/7208558.html
+直接绑定：
+	btn2 = Button(frame, text="a button")
+	btn2.bind('<Button-1>',btnPressed)
+间接绑定：
+	btn1 = Button(frame, text="a button", command=btnPressed)
+
+循环调用： root.after(1000, method)
+
+# -*- coding:utf-8 -*-
+from Tkinter import *
+
+class Red():
+
+    def __init__(self, root, btn, label):
+        self.label = label
+        self.btn = btn
+        self.root = root
+        self.n = 0
+
+    def gs(self):
+        self.btn['command'] = self.cc
+
+    def cc(self):
+        if self.n == 0:
+            self.label['bg'] = 'red'
+        if self.n == 1:
+            self.label['bg'] = 'yellow'
+        if self.n == 2:
+            self.label['bg'] = 'blue'
+        self.n += 1
+        if self.n >= 3:
+            self.n = 0
+        self.root.after(1000, self.cc)
+
+if __name__ == '__main__':
+    root = Tk()
+    btn = Button(root, text='开始游戏')
+    label = Label(root, text='颜色')
+    r = Red(root, btn, label)
+    r.gs()
+    label.pack()
+    btn.pack()
+    root.mainloop()
+
+
+pack组件设置位置属性参数：
+    after:    　　　　将组件置于其他组件之后；
+    before:    　　　将组件置于其他组件之前；
+    anchor:    　　   组件的对齐方式，顶对齐'n',底对齐's',左'w',右'e'
+    side:    　　　　组件在主窗口的位置，可以为'top','bottom','left','right'（使用时tkinter.TOP,tkinter.E）；
+    fill            　 　填充方式 (Y,垂直，X，水平）
+    expand            1可扩展，0不可扩展
+grid组件使用行列的方法放置组件的位置，参数有：
+    column:        　　组件所在的列起始位置；
+    columnspam:      组件的列宽；
+    row：      　　　   组件所在的行起始位置；
+    rowspam：    　　组件的行宽；
+place组件可以直接使用坐标来放置组件，参数有：
+    anchor:    　组件对齐方式；
+    x:        　　 组件左上角的x坐标；
+    y:        　　 组件右上角的y坐标；
+    relx:        　组件相对于窗口的x坐标，应为0-1之间的小数；
+    rely:           组件相对于窗口的y坐标，应为0-1之间的小数；
+    width:         组件的宽度；
+    heitht:    　  组件的高度；
+    relwidth:      组件相对于窗口的宽度，0-1；
+    relheight:　  组件相对于窗口的高度，0-1；

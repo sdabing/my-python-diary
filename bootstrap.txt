@@ -1,0 +1,71 @@
+http://blog.csdn.net/kebi007/article/details/54341994
+!important是最高优先级的！
+.container
+.container-fluid
+.clearfix
+.visible-xs
+.col-md-offset-1
+<meta name="viewport" 
+content="
+	width=device-width|pixel-width, 
+	initial-scale=floatvalue, 初始缩放比例(0.01-10)
+	minimum-scale=floatvalue,最小缩放比例
+	maximum-scale=floatvalue, 最大缩放比例
+	user-scalable=no|yes, 使用缩放与否
+	target-densitydpi=[]
+
+">
+.img-responsive(max-width:100%;height:auto;)
+.lead
+.text-left
+.text-center
+<abbr class='initialism' title="Phone"></abbr>
+<address></address>
+<blockquote class='pull-right|pull-left'></blockquote>  引用标签
+.list-unstyled
+.list-inline
+.dl-horizontal
+<code></code>标签
+<kbd></kbd>
+<pre></pre>.pre-scrollable
+<var></var
+<samp></samp>
+
+.table
+.table-striped
+.table-bordered
+.table-hover
+.table-condensed
+.info
+.success
+.warning
+.danger
+.active
+.table-responsive
+
+
+.form-group
+<fieldset></fieldset>
+<legend></legend>
+.form-control
+.checkbox
+.btn-default
+.btn
+.form-inline
+.form-horizontal
+.control-label
+.radio
+.disabled
+.checkbox-inline
+.radio-inline
+
+.btn-block
+.img-rounded
+.img-circle
+.img-thumbnail
+.close
+.center-block
+.pull-left
+.hidden-sm
+.btn-toolbar
+.hidden-xs

@@ -1,0 +1,49 @@
+git help
+git help -a
+git config --global user.name "xxx"
+git config --global user.email "xxx"
+git help config
+git config -unset --global user.name
+git config --list
+
+git init
+git add "filename"
+git status
+git commit -m "msg"
+git log --oneline
+git mv <source> <destination>
+git rm "filename"
+git revert HEAD~5
+git rm --cached "filename"
+git reset HEAD --soft
+git reset HEAD --mixed
+git reset HEAD --hard
+
+git branch
+git branch "branch name"
+git checkout "branch name"
+git merge "branch name"
+git diff
+git diff "branch1".."branch2"
+git merge "branch name" --no-ff -m "msg"
+git branch -d "branch name"
+git branch -m "old" "new"
+git checkout -b "branch name"
+git stash
+git stash pop
+git stash list
+git stash apply "stash no"
+
+git clone
+git branch -r
+git push -u origin "branch name"
+git branch -a
+git remote remove origin
+git remote add origin "web"
+git commit -am "msg"
+git pull origin "branch name"
+git push origin "branch name"
+git fetch origin "branch name"
+git checkout origin/master
+
+git config --global alias.ci commit

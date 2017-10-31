@@ -1,0 +1,2 @@
+threading.Thread(target= , args= )
+threading.Timer  隔一定时间调用一个函数,如果想实现每隔一段时间就调用一个函数的话，就要在Timer调用的函数中，再次设置Timer。Timer是Thread的一个派生类

@@ -1,0 +1,83 @@
+1.import time
+	time.time()	Unix 时间戳
+
+2.python字符串替换的2种有效方法 (2011-07-28 12:05:24)转载▼
+标签： 杂谈 	分类： python
+python 字符串替换可以用2种方法实现:
+	1是用字符串本身的方法。
+	2用正则来替换字符串
+	 
+	下面用个例子来实验下：
+	a = 'hello word'
+	我把a字符串里的word替换为python
+	1用字符串本身的replace方法
+	a.replace('word','python')
+	输出的结果是hello python
+	2用正则表达式来完成替换:
+	import re
+	strinfo = re.compile('word')
+	b = strinfo.sub('python',a)
+	print b
+	输出的结果也是hello python
+	至于用哪个方法的话，看你自己的选择了。
+3.如何在python列表中查找某个元素的索引
+	list.index(value)
+
+4.列表删除和增加数据
+	加：
+	append
+	extend
+	insert
+	+
+	删除：
+	del list[2]
+	list.remove()
+	li = li[:-1]
+	li.pop()
+
+5.列表的复制问题：
+	使用 a[:], list(a), a*1, copy.copy(a)四种方式复制列表结果都可以得到一个新的列表，但是如果列表中含有列表，
+	所有b, c, d, e四个新列表的子列表都是指引到同一个对象上。
+	只有使用copy.deepcopy(a)方法得到的新列表f才是包括子列表在内的完全复制。
+6.列表中最大值的序号：
+	li.index(max(li))
+7.字典中最大值的序号
+	a={5:6,1:2}
+	b = [x for x in a.keys() if a[x] == max(a.values())][0]
+8.dir()
+
+9.
+	from a.py import A
+	print A.__dict__
+		{'__module__': 'a', 'CONST': 1, '__doc__': None}(__doc__:文件里的注释,__module__:文件名)
+10.python的特殊方法
+	x[key]:__getitem__()
+	Python 库参考手册
+	模块的名字（即文件的名字）：__name__
+
+11.Python 命令行解析工具 Argparse介绍
+	import argparse
+	
+	    parser = argparse.ArgumentParser(description='run testsuite.')
+	    parser.add_argument('target_host', metavar='TARGET_HOST:TARGET_PORT', type=str,
+	                        help='test target')
+	    parser.add_argument('public_test_data_host', metavar='PUBLIC_TEST_DATA_HOST:PUBLIC_TEST_DATA_PORT', type=str,
+	                        help='public api host for preparing test data')
+	    parser.add_argument('private_test_data_host', metavar='PRIVATE_TEST_DATA_HOST:PRIVATE_TEST_DATA_PORT', type=str,
+	                        help='private api host for preparing test data')
+	    parser.add_argument('-is_osl_mode', action='store_true',
+	                        help='run for OSL. default is False and means for B2B')
+	    parser.add_argument('-is_private_mode', action='store_true',
+	                        help='run for private. default is False and means for public')
+	    parser.add_argument('-auth_host', metavar='AUTH_HOST', type=str,
+	                        help='authentication host(host:port)')
+	    parser.add_argument('-auth_pseudo_user_id', metavar='AUTH_PSEUDO_USER_ID', type=str,
+	                        help='authentication pseudo userid')
+	    args = parser.parse_args()
+
+
+	命令行中输入：
+	python2.7 /pub/www_v1/test/main.py 10.0.0.15:11181 10.0.0.15:20000 10.0.0.15:20000 -auth_host 10.0.0.15:20000 -auth_pseudo_user_id u0000000000000000000000000000006 -is_osl_mode -is_private_mode（注：有-is_osl_mode和-is_private_mode时表示这两个的值是True，因为action=store_true,没有则值为False）
+
+
+12.python optparser库

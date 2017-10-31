@@ -1,0 +1,58 @@
+一.概述
+	1。web应用程序
+	2。传统web
+		一个简单操作需要重新加载全局数据
+	3。
+	ajax
+		异步的javascript和xml，一种创建交互式网页应用的网页开发技术方案，
+		异步的javascript
+		javascript语言和相关浏览器提供类库的功能向服务器端发送请求，之后会自动执行某个javascript的回调函数，这个过程是偷偷进行的，页面无任何感知
+	xml
+二。xmlhttprequest对象
+	ajax主要用xmlhttprequest对象发送请求
+	方法：
+		void open(String method,string url,boolean async)用于创建请求
+		void send(string body)
+		void setHeader(string key,string value)
+		String getAllResponseHeaders()
+		String getResponseHeader(string key)
+		void abort()终止请求
+	属性
+		Number readyState
+			0未调用open
+			1调用open 未调用send
+			2调用send 未接受到响应
+			3接受到部分响应数据
+			4全部
+		function onreadystatechange
+			当readyState值改变时自动触发执行其对应的函数（回调函数）
+		string responseText 返回的数据
+		XmlDocument responseXML
+		states (200,404)
+		statesText(ok,not found)
+三步骤
+	xhr=new XMLHttpRequest()
+	xhr.onreadystatechange = func
+	xhr.open('GET','url','true')
+	xhr.send()
+	注：post请求时需要设置content-type
+四跨浏览器
+	<script type="text/javascript">
+	    var xhr=null;
+	    function getXhr(){
+	        if(window.XMLHttpRequest){
+	        obj=new XMLHttpRequest();
+	        else if(window.ActiveXObject){
+	        obj=new ActiveXObject('Microsoft.XMLHTTP');
+	        }
+	    }
+	    function SendRequest(){
+	        xhr=getXhr();
+	        xhr.onreadystatechange = StatusChange;
+	        xhr.open('GET','data.txt',true);
+	        xhr.send();
+	    
+	    }
+	</script>
+五jquery实现ajax(jquery是javascript的类库，封装)
+下载倒入jQuery(2.+版本不再支持IE9以下的浏览器)

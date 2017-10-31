@@ -1,0 +1,17 @@
+def setUp
+def tearDown
+
+@classmethod
+def setUpClass(cls)
+
+@classmethod
+def tearDownClass(cls)
+
+raise AssertionError
+
+self.assertEqual(res.status_code, 200, output_msg)
+
+try:
+    jsonschema.validate()
+except jsonschema.ValidationError as err:
+    raise jsonschema.ValidationError(err)

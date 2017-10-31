@@ -1,0 +1,15 @@
+1。
+类属性
+实例属性
+属性访问的特殊方法（反射）		主要工具函数（hasattr,getattr,setattr）
+属性包装		装饰器 可读：@property；可写：@<property-name>.setter;可删除：@<property-name>.deleter;
+描述符		协议方法：__get__(),__set__(),__delete__()
+		数据描述符 非数据描述符 （所有类成员函数全是非数据描述符  只能在新式类中使用）
+__call__() 让类实例和函数一样可调用
+
+
+静态方法	（@staticmethod 参数不用self 不能引用或访问实例属性 能用类属性）
+类方法		（@classmethod 参数必须有cls 不能引用或访问实例属性）
+
+2。
+super只能用于新式类（即继承object的类）

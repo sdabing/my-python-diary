@@ -1,0 +1,593 @@
+一.PYTHON WEB开发框架
+
+1.常见的框架
+	1.FULL-STACK FRAMEWORKS:(全栈框架，重量级)
+		django,web2py,turbogears,pylons
+	2.NON FULL-STACK FRAMEWORKS:(非全栈框架，轻量级)
+		tornado,flask,bottle,web.py,pyramid
+	3.https://wiki.python.org/moin/WebFrameworks
+	4.如何选择
+		根据项目需求
+		呈现内容性为主的网站：django等
+		app接口网站：tornado等
+
+二.开发环境搭建
+	1.更新pip
+	python -m pip install --upgrade pip
+	2.安装virtualenv
+	pip install virtualenv==15.0.1
+	virtualenv django_basic_venv
+	C:\Users\surongling\venv\django_basic_venv\Scripts\activate
+	deactivate
+	3.
+	pip install django==1.9.5
+	4.
+	pip install pymysql==0.7.2
+	pip freeze--查看用pip安装的库
+	5.管理软件
+	Navicat Premium 11.1
+	mysql-installer-community-5.7.10.0
+三.命令行工具
+	django-admin.py
+	常用命令
+		django-admin.py help
+		startproject
+		startapp
+		runserver
+		shell
+		dbshell
+		check
+		flush
+		compilemessages
+		makemessages
+		makemigrations
+		migrate
+		showmigrations
+		sqlflush
+		sqlmigrate
+		dumpdata
+		
+	where django-admin.py
+
+四.遇到的问题
+	1.django-admin.py startproject mysite 没有创建目录而是打开django-admin.py
+	这是由于.py 文件的默认打开方式不是python.exe
+
+	将.py文件的默认打开方式修改为python.exe即可	
+	2.	pythonshell中不引用django的config，在python manage.pyshell中启动解释器的同时会自动依赖于配置文件。所以用pythonshell的时候import之前加			入一下
+		代码导入settings，先>>>fromdjango.confimportsettings 
+
+		>>>settings.configure()
+	3.django-admin.py help 出错
+		Traceback (most recent call last):
+		  File "C:\Users\surongling\venv\django_basic_venv\Scripts\django-admin.py", lin
+		e 2, in <module>
+		    from django.core import management
+		ImportError: No module named django.core
+	解决方法：C:\Python36\python.exe C:\Users\surongling\venv\django_basic_venv\Lib\site-packages\django\bin\django-admin.py help
+	把python 和 django-admin的文件路径写全就可以了（可能是由于环境变量没配置好
+	4.静态文件如果引用不了
+	在html开头输入：
+		{% load staticfiles %}
+	引入静态文件时：
+		<link href='{% static 'css/bootstrap.min.css'%}' rel='stylesheet'>
+	5.403错误时 csrf_token
+五。
+	第一步 settings.py里面的INSTALLED_APPS增加app的名字
+	第二部 在views.py里定义业务请求处理函数
+	第三部 定义模板并引入静态文件
+	第四部 启动服务
+	第五步 把用户数据查询出来并渲染到页面上
+六
+	manage.py 命令行工具脚本 django-admin的包装
+	mtv开发模式 
+		model:数据库
+		template：页面
+		view：业务代码
+		
+
+	mvc开发模式 
+		model：负责业务与数据库的映射
+		controller:业务代码
+		view：页面
+	
+七
+	静态文件的配置名:STATICFILES_DIRS
+	include方法 引入app里的url 模块
+	ROOT_URLCONF 
+八。urls.py
+	1.url的加载从配置文件中开始：ROOT_URLCONF
+	2.url定义：
+		urlpatterns = pattern('',
+			(r'^hello/$', views.hello),
+		)（过时）
+		urlpatterns = [
+			url(r'^hello/$', views.hello, 参数, 别名, 前缀),
+		]
+	3.url分解器 include
+	4.url常见写法
+		^test/(?P<id>\d{2})/(?P<key>\w+)/$	(test/66/fsfsf,其中?P<>表示传入的变量）
+九。views.py
+	核心对象：HttpRequest HttpResponse
+	在django.http里
+	1.HttpRequest属性
+		path路径
+		method
+		COOKIES
+		GET
+		POST
+		session会话
+		FILES
+		user登陆用户
+		META头部信息
+	2.token 安全性验证
+		{% csrf_token %}
+	3.HttpRequest方法
+		get_full_path(路径加参数)
+		get
+	4.HttpResponse
+		需要自己创建。每个view请求处理方法必须返回一个HttpResponse对象
+		from django.http import HttpResponse
+		from django.template import loader
+		
+		def my_view(request):
+		    # View code here...
+		    t = loader.get_template('myapp/index.html')
+		    c = {'foo': 'bar'}
+		    return HttpResponse(t.render(c, request), content_type='application/xhtml+xml')
+
+		简写方法 render_to_response
+		from django.shortcuts import render_to_response
+		return render_to_response('myapp/index.html',{'foo': 'bar'})
+		3.redirect方法(跳转)
+		return redirect('https://www.baidu.com')
+		4.locals方法
+		
+十。数据库的配置
+	1.配置项DATABASES
+	2.django.db.backends.mysql|sqlites|...
+	3.mysql驱动程序
+		MySQLdb(不支持python3),PyMySQL,mysqlclient(mysqldb的分支  支持python3),mysql-connector
+	4.
+		1.修改配置文件
+		2.创建数据库
+		3.在工程目录的__init__添加代码(因为django默认是mysqldb)
+			import pymysql
+			pymysql.install_as_MySQLdb()
+		4.manage.py makemigrations（生成脚本）
+		5.manage.py migrate(执行脚本，同步数据库)
+
+十一。orm机制
+	1.定义：对象关系映射，实现面向对象编程语言里不同类型系统的数据之间的转换，即用面向对象的方式操作数据库
+	2.查看orm生成的sql语句：query属性
+	3.配置日志系统
+		我用的django的版本是1.5，听闻django可以配置日志模块，不用自己单独写，于是一阵狂搜加看官方文档解决了我的需求。
+
+		我的需求是需要配置多个日志文件，网上搜出来大部分是一个的，所以给大家一个我的例子做参考。
+		
+		1.在setting.py里面配置如下：
+		
+		 
+		
+		# more details on how to customize your logging configuration.
+		LOGGING = {
+		    'version': 1,
+		    'disable_existing_loggers': True,
+		    'formatters': {
+		        'standard': {
+		                'format': '%(levelname)s %(asctime)s %(message)s'
+		                },
+		    },
+		    'filters': {
+		    },
+		    'handlers': {
+		        'mail_admins': {
+		            'level': 'ERROR',
+		            'class': 'django.utils.log.AdminEmailHandler',
+		            'formatter':'standard',
+		        },
+		        'test1_handler': {
+		            'level':'DEBUG',
+		            'class':'logging.handlers.RotatingFileHandler',
+		            'filename':'path1',
+		            'formatter':'standard',
+		        },
+		        'test2_handler': {
+		            'level':'DEBUG',
+		                   'class':'logging.handlers.RotatingFileHandler',
+		            'filename':'path2',
+		            'formatter':'standard',
+		        },
+		    },
+		    'loggers': {
+		        'django.request': {
+		            'handlers': ['mail_admins'],
+		            'level': 'ERROR',
+		            'propagate': True,
+		        },
+		        'test1':{
+		            'handlers': ['test1_handler'],
+		            'level': 'INFO',
+		            'propagate': False
+		        },
+		         'test2':{
+		            'handlers': ['test2_handler'],
+		            'level': 'INFO',
+		                          'propagate': False
+		        },
+		    }
+		}
+		里面的level什么的可以自己调整，需要几个文件就配几个handler和logger，还是很方面的。用的时候怎么用呢，看下面吧。
+		
+		2.    在要用log的view.py里面，如果想用test1这个日志，则
+		
+		             log=logging.getLogger('test1')
+		
+		            log.error（“日志内容”）
+		
+		如果，想要在日志内容里面传递变量，怎么办
+		
+		              log.error(" %s : execute %s failed",变量1,变量2)，比较像c的printf，还是很方便的。
+	4.orm优缺点
+		优点：简单，安全
+		缺点：慢，不支持很复杂的查询
+十二。models.py
+	https://docs.djangoproject.com/en/1.9/ref/models/fields
+	1.每个数据模型都是django.db.models.Model的子类
+	字段类型
+		models.CharField()
+		BooleanField
+		URLField
+		DateField
+		EmailField
+		OneToOneField()
+		ManyToManyField()
+		ForeignKey()
+		DateTimeField
+		DecimalField
+		FileField
+		FloatField
+		ImageField
+		IntegerField
+		IPAddressField
+		TextField
+		SmallIntegerField
+	2.常用字段选项
+		max_digits 最大位数
+		choices
+		max_length
+		null
+		blank
+		default
+		help_text
+		primary_key
+		unique
+		verbose_name
+		verbose_name_plural(复数时显示的东西)
+	3.扩展属性
+		name = models.CharField('名称', max_length=30)
+		name = models.CharField(max_length=30, verbose_name='名称')
+		内部类class Meta:
+			verbose_name=''
+	4.定义模型方法
+		重写__str__(python3)
+		def __str__(self):
+			return self.name
+		__unicode__(python2)
+
+
+十三。数据库同步操作技巧
+	1.认识一个目录
+		目录名：migrations
+		作用：用来存放通过makemigrations命令生成的数据库脚本，app目录下必须有migrations的目录且该目录下必须有__init__.py
+	2.一个数据表(django_migrations)
+		记录数据库脚本的情况
+	3.相关命令
+		flush 清空数据库
+		sqlflush 查看清空数据库的脚本
+		sqlmigrate app_name migrations_name查看数据库同步的语句
+		makemigrations hello 则只生成hello这个app的数据库的同步脚本
+		showmigrations 查看脚本
+
+	4.遇到的问题
+		1。执行makemigrations 时显示 No changes detected，但是我已经改了models.py了，后来发现原来是INSTALLED_APP的项目加错了，把项目名家上去了，		应该加app名
+		2。执行makemigrations时
+		SyntaxError: (unicode error) 'utf-8' codec can't decode byte 0x92 in position 0:
+		 invalid start byte
+		原因：文件里有汉字，而文件本身保存的格式是日本语，而不是utf-8，把文件保存格式改了就好了
+十四。orm常用操作
+	create,save,delete
+	1.
+		python manage.py shell
+		1.Author.objects.create(name='张三')
+		2.auth = Author()
+		pub.name='张三'
+		pub.save()
+	2.objects:model默认管理器。create是这个管理器里面的方法
+	插入主外键关系的时候，可以用对象的方式，也可以用关联ID的方式
+	插入多对多关系的时候要分布操作
+	3.author = Author.objects.get(id=1)
+	author.name = '叶良臣'
+	author.save()
+	4.Author.objects.filter(id=1).update(name='叶良臣')
+	5.save是model对象的方法
+	6.update是QuerySet对象的方法
+	7.Author.objects.all()查询所有 返回了一个queryset对象,并不会马上执行sql,当使用queryset时才会执行（惰性机制）
+	8.Author.objects.filter(id=1).delete()django中的删除默认是级联删除
+	9.思考：批量增加数据的方法
+十五。查询常用API
+	docs.djangoproject.com/en/1.9/ref/models/querysets
+	1.QuerySet对象
+		可迭代
+		可切片
+	2.查询相关api
+		get 返回model对象 （查出的结果不等于一时会抛异常）
+		tabel_name.objects.all() queryset对象
+		all() queryset
+		filter() 条件查询 queryset
+		exclude  查询与条件不匹配的结果
+		order_by 排序
+		reverse 反向排序
+		values() valuesqueryset 可迭代的字典序列
+		values_list() 元组序列
+		count()
+		first() 等价于[:1][0]
+		last() 等价于[::-1][0]
+		exists()
+		distinct() 去重
+	3.Book.objects.filter(id=1).values('title','author')
+	Publisher.objects.all().oder_by('-id') id降序排列
+	Publisher.objects.all().oder_by('id').reverse() id降序排列
+	Publisher.objects.all().values('city').distinct() 去重
+	Publisher.objects.filter(city='北京').count()
+	Entry.objects.filter(id__gt=4) (SELECT ... WHERE id > 4;)
+
+十六。多表关联查询
+	AuthorDetail.objects.values('sex','email','author__name')
+	Book.objects.filter(title='xx').values('authors__name') 加s表示多对多关系  __表示关联查询
+	多表查询技巧：
+		__ 可以生成连接查询
+		_set: 提供了对象访问相关数据的方法。但是这种方法只能时候主键类访问外键类
+		Publisher.objects.get(name='xx').book_set.all()
+
+十七聚集查询和分组查询
+	1.annotate:可以为queryset每个对象添加注解，用于分组查询
+	2.aggregate 用于聚集查询
+	3.聚合函数 from django.db.models import *
+	Avg,Count,Min,Sum,Max
+	4.Publisher.objects.filter(city='北京').count()
+	==
+	Publisher.objects.filter(city='北京').aggregate(my_count = Count('name'))   (返回{'my_count':1})
+	Book.objects.filter(name='xx').aggregate(Sum('price'))
+	Book.objects.values('authors__name').annotate(Sum('price'))
+
+十八。使用原生sql
+	1.extra:结果集修改器 一种提供额外查询参数的机制
+		Book.objects.filter(publisher__name='广东人民出版社').extra(where=['price>50'])
+		Book.objects.extra(select={'count':'select count(*) from hello_book'})
+
+
+	2.raw:执行原始sql返回模型实例(最好是实行select查询语句,因为惰性机制，增删改并不会返回东西，会出错)
+		Book.objects.raw('select * from hello_author')
+	3.自定义sql(第三种完全不依赖model)
+		from django.db import connection
+		cursor = connection.cursor()
+		cursor.execute('select * from hello_author')
+		cursor.fetchone() 返回结果行
+		cursor.fetchall()
+
+十九。常用模板标签及过滤器
+	1.模板的组成
+		HTML+逻辑控制代码
+	2.逻辑控制代码组成
+		变量
+			{{var_name}}
+		标签
+			{% load staticfiles %}
+		过滤器（filter）
+			{{ ship_date|date"Fj,Y"}}
+	3.常用标签
+	https://docs.djangoproject.com/en/1.9/ref/templates/builtins
+		{% if %}
+		,{% ifequal %},{% ifnotequal %}
+		{% for %},{% cycle %}
+		{# #}单行注释
+		{% comment %}多行注释
+		{% csrf_token %} 用render时会自动加载，但是如果用render_to_response时需要引用from django.template import RequestContext
+		{% debug %}
+		{% filter %}
+		{% autoescape %} 自动转义
+		{% firstof %} 输出第一个值不等于False的变量
+		{% load %}加载标签库
+		{% now %}获取当前时间
+		{% spaceless %}移除空格
+		{% url %}引入路由器的地址
+		{% verbatim %}禁止render
+		{% with %}用更简单的变量名缓存复杂的变量名
+		。。。
+	4.过滤器(|)
+		1.{% filter force_escape|lower %}
+		    This text will be HTML-escaped, and will appear in all lowercase.
+		{% endfilter %}
+		2.{{ val|upper }}
+		3.add 加法，cut,date,default,escape 转义,safe 不转义,filesizeformat,length,slice 切片操作，urlencode,truncatechars 按字符截取字符串，truncatewords 按空格截取，striptags过滤html标签
+		
+
+二十。模板包含和继承
+	https://docs.djangoproject.com/en/1.9/ref/templates/builtins
+	1.{% include %} 允许在模板中包含其他模板的内容 参数可以是路径，变量，字符串
+	{% include 'xxx.html'%}
+	2.
+	view.py
+		from django.template import Template
+		value = Template('xxx')
+	html
+		{% include value %}
+	3.
+	{% include "name_snippet.html" with person="Jane" greeting="Hello" %}
+	4.{% block %}{% extends %}继承
+	https://docs.djangoproject.com/en/1.9/ref/templates/language/
+	
+	如果需要得到父模板的内容，{{ block.super }}
+
+二十一。admin基本配置
+	https://docs.djangoproject.com/en/1.9/ref/contrib/admin
+	admin.site.register(Author)
+	1.
+	class PublisherAdmin(admin.ModelAdmin):
+		list_display = ('name', 'country', 'state_province', 'city',)
+	admin.site.register(Publisher,PublisherAdmin)
+	2.
+	@admin.register(Publisher)
+	class PublisherAdmin(admin.ModelAdmin):
+		list_display = ('name', 'country', 'state_province', 'city',)
+	3.常用设置技巧
+		list_display
+		search_fields
+		list_filter 制定列表过滤器
+		ordering 制定排序字段
+		fields\exclude 指定编辑表单需要编辑、不需编辑的字段
+		fieldsets设置分组表单
+	4.更改用户密码：python manage.py changepassword admin
+	python manage.py createsuperuser
+
+二十二Form组件
+	https://docs.djangoproject.com/en/1.9/ref/forms/api
+	https://docs.djangoproject.com/en/1.9/ref/forms/fields
+
+	1.所有表单类都作为django.forms.Form的子类
+	django.forms.ModelForm 可以和模型类绑定
+	2.不使用django form
+	
+	3.使用django form
+	forms.py
+		from django import forms
+		class PublisherForm(forms.Form):
+			name = forms.CharField(label='名称', error_messages={'required':'这个项目必填'})
+	html
+		<form action="{% url 'add_publisher' %}" method="post">
+			{% csrf_token %}
+			{{ publisher_form.as_p }}
+			<input type='submit' value='提交'></br>
+		</form>
+	views.py
+		from hello_django.models import *
+
+		def add_publisher(request):
+		    if request.method == 'POST':
+		        publisher_form = PublisherForm(request.POST)
+		        if publisher_form.is_valid():
+		            Publisher.objects.create(
+		                       name = publisher_form.cleaned_data['name'],
+		                       address = publisher_form.cleaned_data['address'],
+		                       city = publisher_form.cleaned_data['city'],
+		                       state_province = publisher_form.cleaned_data['state_province'],
+		                       country = publisher_form.cleaned_data['country'],
+		                       website = publisher_form.cleaned_data['website'],
+		                   )
+		            return HttpResponse('添加成功')
+		    else:
+		        publisher_form = PublisherForm()
+		    return render(request, 'b.html', locals())
+	4.使用django modelform
+	forms.py
+		from django import forms
+		from hello_django.models import *
+		class PublisherForm(forms.ModelForm):
+			class Meta:
+				model = Publisher
+				exclude = ('id',)
+	views.py
+		def add_publisher(request):
+		    if request.method == 'POST':
+		        publisher_form = PublisherForm(request.POST)
+		        if publisher_form.is_valid():
+		            publisher_form.save()
+		            return HttpResponse('添加成功')
+		    else:
+		        publisher_form = PublisherForm()
+		    return render(request, 'b.html', locals())
+	html
+		<form action="{% url 'add_publisher' %}" method="post">
+			{% csrf_token %}
+			{{ publisher_form.as_p }}
+			<input type='submit' value='提交'></br>
+		</form>
+
+二十三。表单验证
+	只有forms.py改变
+	1.表单字段的验证器
+	https://docs.djangoproject.com/en/1.9/ref/validators
+	forms.py
+		from django.core.exceptions import ValidationError
+		from hello_django.models import Publisher
+		from django import forms
+		
+		def validate_name(value):
+		    try:
+		        Publisher.objects.get(name=value)
+		        raise ValidationError('%s已经存在'%value)
+		    except Publisher.DoesNotExist:
+		        pass
+		
+		class PublisherForm(forms.ModelForm):
+		    name = forms.CharField(label='名称', validators=[validate_name])
+		    class Meta:
+		        model = Publisher
+		        exclude = ('id',)
+
+	views.py
+		def add_publisher(request):
+		    if request.method == 'POST':
+		        publisher_form = PublisherForm(request.POST)
+		        if publisher_form.is_valid():
+		            publisher_form.save()
+		            return HttpResponse('添加成功')
+		    else:
+		        publisher_form = PublisherForm()
+		    return render(request, 'b.html', locals())
+	html
+		<form action="{% url 'add_publisher' %}" method="post">
+			{% csrf_token %}
+			{{ publisher_form.as_p }}
+			<input type='submit' value='提交'></br>
+
+	2.clean_filedname 验证字段，针对某个字段进行验证
+
+	forms.py
+	
+	class PublisherForm(forms.ModelForm):
+	    def clean_name(self):
+	        value = self.cleaned_data.get('name')
+	        try:
+	            Publisher.objects.get(name=value)
+	            raise ValidationError('%s已经存在'%value)
+	        except Publisher.DoesNotExist:
+	            pass
+	        return value#(这句话必须有)
+	    class Meta:
+	        model = Publisher
+	        exclude = ('id',)
+
+
+	3.表单clean方法,针对整个表单进行验证
+
+	forms.py
+	
+	class PublisherForm(forms.ModelForm):
+	    def clean(self):
+	        cleaned_data = super(PublisherForm, self).clean()
+	        value = cleaned_data.get('name')
+	        try:
+	            Publisher.objects.get(name=value)
+	            self._errors['name']=self.error_class(['%s已经存在'%value])
+	        except Publisher.DoesNotExist:
+	            pass
+	        return cleaned_data#(这句话必须有)
+	    class Meta:
+	        model = Publisher
+	        exclude = ('id',)
+	4.clean_filedname优先于clean
+
+
+
